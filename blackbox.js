@@ -32,18 +32,24 @@ document.addEventListener('DOMContentLoaded', () => {
     let blocPuzzle = document.getElementById('bcPuzzles');
     if (blocPuzzle == null) { throw console.error('ahhh');}
     let i =1;
+    let atomsOnGrid = 0;
     for (let level of LEVELS) {
         let puzzle = document.createElement('div');
         puzzle.addEventListener('click',(event) => {
             console.log(event);
             let puzzle = event.target;
+            if (puzzle instanceof HTMLDivElement == false) {
+                throw console.error('rgtg');
+            }
             let spPuzzle = document.getElementById('spPuzzle');
             if (spPuzzle == null) {
                 throw console.error('rgtg');
                 
             }
             let niveau = Number.parseInt(puzzle.innerHTML[2]);
-            spPuzzle.innerHTML = ' #' +niveau+' - '+puzzle.getAttribute('data-atoms')+' atomes';
+            // @ts-ignore
+            let maxAtoms = Number.parseInt(puzzle.getAttribute('data-atoms'));
+            spPuzzle.innerHTML = ' #' +niveau+' - '+maxAtoms+' atomes';
 
             let tabPlateau = document.getElementById('tabPlateau');
             if (tabPlateau == null) { throw console.error();}
@@ -54,8 +60,38 @@ document.addEventListener('DOMContentLoaded', () => {
                 for (let j = 0;j<gridSize+2;++j) {
                     let cell = document.createElement('td');
                     cell.addEventListener('click',(event) => {
-                        cell.classList.toggle('atom');
-                    })
+                        console.log(atomsOnGrid,maxAtoms);
+                        let cellule = event.target;
+                        let btnValider = document.getElementById('btnValider');
+                        if (btnValider == null) { throw console.error();}
+                        btnValider.setAttribute('disabled','disabled');
+                        if (cellule instanceof HTMLTableCellElement == false) {
+                            throw console.error('rgtg');
+                        }
+                        if (atomsOnGrid == maxAtoms-1) {
+                     
+                            btnValider.removeAttribute('disabled');
+                            // let response = window.confirm('tu as gagné');
+                            // if (response == true) {
+                            //     document.getElementsByTagName('nav')[0].style.display = 'block';
+                            //     document.getElementsByTagName('main')[0].style.display = 'none';
+                            //     let tabPlateau = document.getElementById('tabPlateau');
+                            //     if (tabPlateau == null) { throw console.error();}
+                            //     tabPlateau.innerHTML = '';
+                            // } else {
+                            //     console.log('ok');
+                            // }
+                        }
+                        if (cellule.classList.contains('atom')) {
+                            cellule.classList.remove('atom');
+                            atomsOnGrid--;
+                        } else {
+                            cellule.classList.add('atom');
+                            atomsOnGrid++;
+                        }
+                       
+
+                    });
                     ligne.appendChild(cell);
                 }
                 tabPlateau.appendChild(ligne);
@@ -83,6 +119,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementsByTagName('nav')[0].style.display = 'block';
 
+    let btnRetour = document.getElementById('btnRetour');
+    btnRetour?.addEventListener('click',giveUp);
+
 });
 
 function toggleDarkMode() {
@@ -97,6 +136,16 @@ function toggleDarkMode() {
 }
 
 function giveUp() {
-    let response = window.prompt("t'es sur de vouloir quitter ??");
+    let response = window.confirm("t'es sur de vouloir quitter ??");
+    if (response == true) {
+
+        document.getElementsByTagName('nav')[0].style.display = 'block';
+        document.getElementsByTagName('main')[0].style.display = 'none';
+        let tabPlateau = document.getElementById('tabPlateau');
+        if (tabPlateau == null) { throw console.error();}
+        tabPlateau.innerHTML = '';
+    } else {
+        console.log('ok');
+    }
 }
 
