@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Black Box</title>
+    <link href="https://fonts.cdnfonts.com/css/black-ops-one" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="blackbox.css">
+    <script src="blackbox.js"></script>
+</head>
+
+<body>
+    <h1>Black Box</h1>
+    <!-- Ecran de choix du niveau -->
+    <nav>
+        <H2>Choix du puzzle</H2>
+        <div id="bcPuzzles"></div>
+    </nav>
+    <!-- Ecran de jeu : plateau et boutons de retour/validation -->
+    <main>
+        <h2>Puzzle <span id="spPuzzle"></span></h2> 
+        <div>
+            <table id="tabPlateau"></table>
+            <footer>
+                <button id="btnRetour">Retour</button>
+                <button id="btnValider" disabled>Valider</button>
+            </footer>
+        </div>
+    </main>
+</body>
+
+</html>
